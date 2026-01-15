@@ -2,11 +2,21 @@ import java.io.*;
 
 /**
  * Lab 1: Byte Detective
+ */
+public class ByteDetective {
+
+    private static final String MYSTERY_FILE = "mystery.bin";
+
+    /**
+     * Task 1: Read and return the firsimport java.io.*;
+
+/**
+ * Lab 1: Byte Detective
  *
  * Practice reading raw bytes from a file using FileInputStream.
  * Complete the methods below to read, interpret, and analyze binary data.
  *
- * @author [Your Name]
+ * @author Jessica Kamienski
  */
 public class ByteDetective {
 
@@ -53,21 +63,30 @@ public class ByteDetective {
      */
     public static void readAllBytes() {
         // TODO: Open FileInputStream using try-with-resources
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
 
-        // TODO: Create an int variable for the byte value
+            // TODO: Create an int variable for the byte value
+            int b;
 
-        // TODO: Create a counter for total bytes
+            // TODO: Create a counter for total bytes
+            int count = 0;
 
-        // TODO: Loop while read() doesn't return -1
-        //       Inside loop:
-        //         - Print the byte value
-        //         - Increment counter
+            // TODO: Loop while read() doesn't return -1
+            //       Inside loop:
+            //         - Print the byte value
+            //         - Increment counter
+            while ((b = fis.read()) != -1) {
+                count++;
+                System.out.println("Byte " + count + ": " + b);
+            }
 
-        // TODO: After loop, print total count
+            // TODO: After loop, print total count
+            System.out.println("Total bytes read: " + count);
 
-        // TODO: Handle IOException
-
-        System.out.println("TODO: Implement readAllBytes()");
+        } catch (IOException e) {
+            // TODO: Handle IOException
+            System.err.println("Error reading file: " + e.getMessage());
+        }
     }
 
     /**
@@ -87,8 +106,19 @@ public class ByteDetective {
     public static void displayAsHex() {
         // TODO: Similar structure to readAllBytes()
         // TODO: But use String.format("%02X ", byteValue) for display
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
 
-        System.out.println("TODO: Implement displayAsHex()");
+            int b;
+
+            while ((b = fis.read()) != -1) {
+                System.out.print(String.format("%02X ", b));
+            }
+
+            System.out.println();
+
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
     }
 
     /**
@@ -112,8 +142,19 @@ public class ByteDetective {
     public static void attemptAsAscii() {
         // TODO: Same loop pattern
         // TODO: Cast to char and print: System.out.print((char) byteValue);
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
 
-        System.out.println("TODO: Implement attemptAsAscii()");
+            int b;
+
+            while ((b = fis.read()) != -1) {
+                System.out.print((char) b);
+            }
+
+            System.out.println();
+
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
     }
 
     /**
@@ -143,21 +184,47 @@ public class ByteDetective {
         //       int min = 256;  (start higher than any byte)
         //       int max = -1;   (start lower than any byte)
         //       long sum = 0;   (use long to avoid overflow)
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
 
-        // TODO: Read file with standard loop
-        //       Inside loop:
-        //         - Increment count
-        //         - Update min if byteValue < min
-        //         - Update max if byteValue > max
-        //         - Add byteValue to sum
+            int count = 0;
+            int min = 256;
+            int max = -1;
+            long sum = 0;
 
-        // TODO: After loop, calculate and display:
-        //       - Total bytes (count)
-        //       - Min value
-        //       - Max value
-        //       - Average (sum / count as a double)
+            // TODO: Read file with standard loop
+            //       Inside loop:
+            //         - Increment count
+            //         - Update min if byteValue < min
+            //         - Update max if byteValue > max
+            //         - Add byteValue to sum
+            int b;
+            while ((b = fis.read()) != -1) {
+                count++;
+                sum += b;
 
-        System.out.println("TODO: Implement analyzeFile()");
+                if (b < min) {
+                    min = b;
+                }
+                if (b > max) {
+                    max = b;
+                }
+            }
+
+            // TODO: After loop, calculate and display:
+            //       - Total bytes (count)
+            //       - Min value
+            //       - Max value
+            //       - Average (sum / count as a double)
+            double average = (double) sum / count;
+
+            System.out.println("Total bytes: " + count);
+            System.out.println("Min value: " + min);
+            System.out.println("Max value: " + max);
+            System.out.println("Average: " + average);
+
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
     }
 
     /**
@@ -167,15 +234,9 @@ public class ByteDetective {
      * Implement the methods above, then run this to test your code.
      */
     public static void main(String[] args) {
-        System.out.println("=== Lab 1: Byte Detective ===\n");
-
-        System.out.println("=== Task 1: First Byte (Example) ===");
+        System.out.println("=== Task 1: First Byte ===");
         int firstByte = readFirstByte();
-        if (firstByte != -1) {
-            System.out.println("First byte: " + firstByte);
-            System.out.println("As hex: " + String.format("%02X", firstByte));
-            System.out.println("As char: '" + (char) firstByte + "'");
-        }
+        System.out.println("First byte: " + firstByte);
         System.out.println();
 
         System.out.println("=== Task 2: All Bytes ===");
@@ -192,9 +253,309 @@ public class ByteDetective {
 
         System.out.println("=== Task 5: File Analysis ===");
         analyzeFile();
+    }
+}t byte from the file.
+     * EXAMPLE PROVIDED
+     */import java.io.*;
+
+/**
+ * Lab 1: Byte Detective
+ */
+public class ByteDetective {
+
+    private static final String MYSTERY_FILE = "mystery.bin";
+
+    /**
+     * Task 1: Read and return the first byte from the file.
+     * EXAMPLE PROVIDED
+     */
+    public static int readFirstByte() {
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
+            return fis.read();
+        } catch (IOException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * Task 2: Read and display ALL bytes from the file.
+     */
+    public static void readAllBytes() {
+
+        // TODO: Open FileInputStream using try-with-resources
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
+
+            // TODO: Create an int variable for the byte value
+            int byteValue;
+
+            // TODO: Create a counter for total bytes
+            int count = 0;
+
+            // TODO: Loop while read() doesn't return -1
+            while ((byteValue = fis.read()) != -1) {
+                count++;
+                System.out.println("Byte " + count + ": " + byteValue);
+            }
+
+            // TODO: After loop, print total count
+            System.out.println("Total bytes read: " + count);
+
+        } catch (IOException e) {
+            System.err.println("Error reading file.");
+        }
+    }
+
+    /**
+     * Task 3: Display all bytes in hexadecimal format.
+     */
+    public static void displayAsHex() {
+
+        // TODO: Similar structure to readAllBytes()
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
+
+            int byteValue;
+
+            while ((byteValue = fis.read()) != -1) {
+                System.out.print(String.format("%02X ", byteValue));
+            }
+
+            System.out.println();
+
+        } catch (IOException e) {
+            System.err.println("Error reading file.");
+        }
+    }
+
+    /**
+     * Task 4: Attempt to display bytes as ASCII characters.
+     */
+    public static void attemptAsAscii() {
+
+        // TODO: Same loop pattern
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
+
+            int byteValue;
+
+            while ((byteValue = fis.read()) != -1) {
+                System.out.print((char) byteValue);
+            }
+
+            System.out.println();
+
+        } catch (IOException e) {
+            System.err.println("Error reading file.");
+        }
+    }
+
+    /**
+     * Task 5: Analyze the file and display statistics.
+     */
+    public static void analyzeFile() {
+
+        // TODO: Initialize tracking variables
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
+
+            int count = 0;
+            int min = 256;
+            int max = -1;
+            long sum = 0;
+
+            int byteValue;
+
+            // TODO: Read file with standard loop
+            while ((byteValue = fis.read()) != -1) {
+                count++;
+                sum += byteValue;
+
+                if (byteValue < min) {
+                    min = byteValue;
+                }
+                if (byteValue > max) {
+                    max = byteValue;
+                }
+            }
+
+            // TODO: Display results
+            double average = (double) sum / count;
+
+            System.out.println("Total bytes: " + count);
+            System.out.println("Min value: " + min);
+            System.out.println("Max value: " + max);
+            System.out.println("Average: " + average);
+
+        } catch (IOException e) {
+            System.err.println("Error reading file.");
+        }
+    }
+
+    /**
+     * Main method - DO NOT MODIFY
+     */
+    public static void main(String[] args) {
+
+        System.out.println("=== Task 1: First Byte ===");
+        int firstByte = readFirstByte();
+        System.out.println("First byte: " + firstByte);
         System.out.println();
 
-        System.out.println("=== Lab Complete! ===");
-        System.out.println("Review your output and discuss the questions in README.md");
+        System.out.println("=== Task 2: All Bytes ===");
+        readAllBytes();
+        System.out.println();
+
+        System.out.println("=== Task 3: Hex Display ===");
+        displayAsHex();
+        System.out.println();
+
+        System.out.println("=== Task 4: ASCII Attempt ===");
+        attemptAsAscii();
+        System.out.println();
+
+        System.out.println("=== Task 5: File Analysis ===");
+        analyzeFile();
+    }
+}
+    public static int readFirstByte() {
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
+            return fis.read();
+        } catch (IOException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * Task 2: Read and display ALL bytes from the file.
+     */
+    public static void readAllBytes() {
+
+        // TODO: Open FileInputStream using try-with-resources
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
+
+            // TODO: Create an int variable for the byte value
+            int byteValue;
+
+            // TODO: Create a counter for total bytes
+            int count = 0;
+
+            // TODO: Loop while read() doesn't return -1
+            while ((byteValue = fis.read()) != -1) {
+                count++;
+                System.out.println("Byte " + count + ": " + byteValue);
+            }
+
+            // TODO: After loop, print total count
+            System.out.println("Total bytes read: " + count);
+
+        } catch (IOException e) {
+            System.err.println("Error reading file.");
+        }
+    }
+
+    /**
+     * Task 3: Display all bytes in hexadecimal format.
+     */
+    public static void displayAsHex() {
+
+        // TODO: Similar structure to readAllBytes()
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
+
+            int byteValue;
+
+            while ((byteValue = fis.read()) != -1) {
+                System.out.print(String.format("%02X ", byteValue));
+            }
+
+            System.out.println();
+
+        } catch (IOException e) {
+            System.err.println("Error reading file.");
+        }
+    }
+
+    /**
+     * Task 4: Attempt to display bytes as ASCII characters.
+     */
+    public static void attemptAsAscii() {
+
+        // TODO: Same loop pattern
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
+
+            int byteValue;
+
+            while ((byteValue = fis.read()) != -1) {
+                System.out.print((char) byteValue);
+            }
+
+            System.out.println();
+
+        } catch (IOException e) {
+            System.err.println("Error reading file.");
+        }
+    }
+
+    /**
+     * Task 5: Analyze the file and display statistics.
+     */
+    public static void analyzeFile() {
+
+        // TODO: Initialize tracking variables
+        try (FileInputStream fis = new FileInputStream(MYSTERY_FILE)) {
+
+            int count = 0;
+            int min = 256;
+            int max = -1;
+            long sum = 0;
+
+            int byteValue;
+
+            // TODO: Read file with standard loop
+            while ((byteValue = fis.read()) != -1) {
+                count++;
+                sum += byteValue;
+
+                if (byteValue < min) {
+                    min = byteValue;
+                }
+                if (byteValue > max) {
+                    max = byteValue;
+                }
+            }
+
+            // TODO: Display results
+            double average = (double) sum / count;
+
+            System.out.println("Total bytes: " + count);
+            System.out.println("Min value: " + min);
+            System.out.println("Max value: " + max);
+            System.out.println("Average: " + average);
+
+        } catch (IOException e) {
+            System.err.println("Error reading file.");
+        }
+    }
+
+    /**
+     * Main method - DO NOT MODIFY
+     */
+    public static void main(String[] args) {
+
+        System.out.println("=== Task 1: First Byte ===");
+        int firstByte = readFirstByte();
+        System.out.println("First byte: " + firstByte);
+        System.out.println();
+
+        System.out.println("=== Task 2: All Bytes ===");
+        readAllBytes();
+        System.out.println();
+
+        System.out.println("=== Task 3: Hex Display ===");
+        displayAsHex();
+        System.out.println();
+
+        System.out.println("=== Task 4: ASCII Attempt ===");
+        attemptAsAscii();
+        System.out.println();
+
+        System.out.println("=== Task 5: File Analysis ===");
+        analyzeFile();
     }
 }
